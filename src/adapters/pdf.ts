@@ -1,9 +1,9 @@
 import * as pdfjsLib from 'pdfjs-dist';
+import pdfWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import type { ScanResult, SuspiciousSegment } from '../types';
 
-// Ensure the worker is set up for Vite
-// In a real Vite app, we would import the worker URL, but for this scaffolding:
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Properly load the worker via Vite bundler instead of relying on external CDNs
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string): Promise<ScanResult> {
   const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) });
