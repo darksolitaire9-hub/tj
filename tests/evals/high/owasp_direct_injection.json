@@ -1,11 +1,11 @@
 {
   "summary": "Scanned 1 pages. Found 1 suspicious segments.",
   "risk_level": "high_risk",
-  "rationale": "Detected 1 suspicious artifacts. Critical prompt-injection patterns or severe cloaking detected.",
+  "rationale": "Detected 1 suspicious artifacts. Critical prompt-injection patterns or severe physical anomalies (occlusion) detected.",
   "segments": [
     {
       "id": "1-abc",
-      "type": "other",
+      "type": "prompt_injection",
       "page": 1,
       "position": "x:100, y:100",
       "visibility_score": 1,
@@ -14,10 +14,10 @@
       "control_phrase_score": 0.95,
       "notes": "Semantic injection pattern detected.",
       "risk": "high",
-      "explanation": "Segment contains explicit prompt-injection or jailbreak language intended to hijack LLM behavior.",
+      "explanation": "Segment contains explicit prompt-injection or jailbreak language intended to hijack LLM behavior. Resumes are descriptive, not imperative; such language is highly anomalous.",
       "recommended_action": "Flag immediately. Do not process in downstream LLMs."
     }
   ],
-  "global_recommendation": "Reject under policy due to hidden manipulative content or prompt injections.",
+  "global_recommendation": "Reject under policy due to hidden manipulative content, occlusion steganography, or prompt injections.",
   "policy_notes": "Apply standard zero-trust boundaries."
 }
