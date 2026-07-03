@@ -89,9 +89,15 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
       // 1.5. Obfuscated Payload (Shannon Entropy)
       if (!type && str.length >= 32) {
         entropy = calculateEntropy(str);
-        if (entropy > 5.0) {
+        const hasNoSpaces = !/\s/.test(str);
+        const isBase64Charset = /^[A-Za-z0-9+/=]+$/.test(str);
+        
+        if (entropy > 4.7 && hasNoSpaces && isBase64Charset) {
           type = 'obfuscated_payload';
-          notes = `String entropy is mathematically too high for natural language (${entropy.toFixed(2)} bits/char). Resembles encoded payload (Base64/Hex).`;
+          notes = `String entropy is mathematically too high for a single word (${entropy.toFixed(2)} bits/char). Resembles encoded payload (Base64).`;
+        } else if (entropy > 5.0) {
+          type = 'obfuscated_payload';
+          notes = `String entropy is mathematically too high for natural language (${entropy.toFixed(2)} bits/char). Resembles encoded payload.`;
         }
       }
 
