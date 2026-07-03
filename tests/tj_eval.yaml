@@ -1,0 +1,21 @@
+name: "TJ Deterministic JSON Schema Evaluation"
+tests:
+  - name: "Validates High Risk Threshold"
+    command: "npm run test:tj_engine -- --fixture white_text_attack.json"
+    assertions:
+      - type: "stdout_includes"
+        expected: '"risk_level": "high_risk"'
+      - type: "stdout_includes"
+        expected: '"type": "white_text"'
+      - type: "exit_code"
+        expected: 0
+
+  - name: "Validates Schema Exactness"
+    command: "npm run test:tj_engine -- --fixture clean_resume.json"
+    assertions:
+      - type: "stdout_includes"
+        expected: '"risk_level": "no_risk"'
+      - type: "stdout_includes"
+        expected: '"segments": []'
+      - type: "exit_code"
+        expected: 0
