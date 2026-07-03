@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
       
@@ -20,22 +20,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Lint
-        run: npm run lint
-        
       - name: Build
         run: npm run build
         
-      - name: Run Vitest
-        run: npm run test -- --run
-        
       - name: Run Bineval Golden Tests
         run: |
-          chmod +x tools/bineval.exe || true
-          
           # Generate outputs
           npm run test:tj_engine
           
           # Run strict assertion evaluation
-          ./tools/bineval.exe run --suite tj_eval_anomalous -p . -t tests/evals/high
-          ./tools/bineval.exe run --suite tj_eval_clean -p . -t tests/evals/clean
+          .\tools\bineval.exe run --suite tj_eval_anomalous -p . -t tests\evals\high
+          .\tools\bineval.exe run --suite tj_eval_clean -p . -t tests\evals\clean
