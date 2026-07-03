@@ -130,6 +130,15 @@ function onChange(e: Event) {
   font-size: 1.1rem;
 }
 
+@media (max-width: 600px) {
+  .header h1 {
+    font-size: 2.2rem;
+  }
+  .header p {
+    font-size: 1rem;
+  }
+}
+
 .dropzone {
   position: relative;
   text-align: center;
@@ -203,6 +212,7 @@ function onChange(e: Event) {
 }
 .segment-header {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   align-items: center;
   margin-bottom: 12px;
