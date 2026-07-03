@@ -1,0 +1,8 @@
+{
+  "summary": "Document \"clean_baseline.pdf\" has 0 suspicious segments.",
+  "risk_level": "no_risk",
+  "rationale": "No hidden text, micro-fonts, or injection patterns were detected by the structural scanner.",
+  "segments": [],
+  "global_recommendation": "Proceed safely.",
+  "policy_notes": "Document passed initial edge WAF structural checks."
+}

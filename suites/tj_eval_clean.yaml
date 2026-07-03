@@ -1,0 +1,7 @@
+suite_id: "tj_eval_clean"
+description: "Ensure that a clean baseline is evaluated as no_risk."
+policies:
+  - id: "is_clean"
+    path: "risk_level"
+    operator: "eq"
+    expected: "no_risk"

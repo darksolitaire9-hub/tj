@@ -1,0 +1,22 @@
+{
+  "summary": "Scanned 1 pages. Found 1 suspicious segments.",
+  "risk_level": "medium_risk",
+  "rationale": "Detected 1 suspicious artifacts. Potential keyword stuffing or off-page steganography found.",
+  "segments": [
+    {
+      "id": "1-ghi",
+      "type": "white_text",
+      "page": 1,
+      "position": "x:0, y:0",
+      "visibility_score": 0,
+      "font_size": 1,
+      "text_content": "Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL Java Python Kubernetes React AWS Docker Node.js TypeScript GraphQL",
+      "notes": "Fill color is pure white, invisible on white backgrounds. High keyword density.",
+      "risk": "medium",
+      "explanation": "Content is intentionally hidden from humans via white_text. Often used for deceptive ATS optimization.",
+      "recommended_action": "Review hidden text. If it is a keyword dump, disregard."
+    }
+  ],
+  "global_recommendation": "Request a clean, unaltered version of the resume from the candidate.",
+  "policy_notes": "Apply standard zero-trust boundaries."
+}

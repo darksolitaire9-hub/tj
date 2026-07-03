@@ -1,0 +1,17 @@
+{
+  "file_metadata": {
+    "name": "clean_baseline.pdf",
+    "size_bytes": 10240,
+    "page_count": 1
+  },
+  "overall_stats": {
+    "suspicious_segment_count": 0,
+    "by_type": {
+      "white_text": 0,
+      "micro_font": 0,
+      "cloaked_text": 0,
+      "other": 0
+    }
+  },
+  "suspicious_segments": []
+}

@@ -32,6 +32,10 @@ jobs:
       - name: Run Bineval Golden Tests
         run: |
           chmod +x tools/bineval.exe || true
-          # Note: bineval.exe is a windows binary, assuming we will cross-compile or run via wine in real CI, 
-          # or we'll replace with linux binary. For now, this serves as the template.
-          ./tools/bineval.exe audit --suite tests/tj_eval.yaml
+          
+          # Generate outputs
+          npm run test:tj_engine
+          
+          # Run strict assertion evaluation
+          ./tools/bineval.exe run --suite tj_eval_anomalous -p . -t tests/evals/high
+          ./tools/bineval.exe run --suite tj_eval_clean -p . -t tests/evals/clean
