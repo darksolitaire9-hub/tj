@@ -102,6 +102,15 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
         notes = `Coordinates (${Math.round(x)}, ${Math.round(y)}) are physically outside page bounds.`;
       }
 
+      // 6. Prompt Injection (Must catch here so it isn't dropped before reaching the engine)
+      if (!type) {
+        const injectionPatterns = /(ignore.*instructions|ignore all instructions|system override|you must|bypass|output exactly|act as)/i;
+        if (injectionPatterns.test(str)) {
+          type = 'prompt_injection';
+          notes = 'Contains explicit imperative LLM hijacking commands.';
+        }
+      }
+
       if (type) {
         typeCounts[type]++;
         segments.push({
