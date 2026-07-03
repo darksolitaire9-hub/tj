@@ -104,8 +104,10 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
 
       // 6. Prompt Injection (Must catch here so it isn't dropped before reaching the engine)
       if (!type) {
+        // Strip zero-width spaces and formatting characters used for obfuscation
+        const normalizedStr = str.replace(/[\u200B-\u200D\uFEFF]/g, '');
         const injectionPatterns = /(ignore.*instructions|ignore all instructions|system override|you must|bypass|output exactly|act as)/i;
-        if (injectionPatterns.test(str)) {
+        if (injectionPatterns.test(normalizedStr)) {
           type = 'prompt_injection';
           notes = 'Contains explicit imperative LLM hijacking commands.';
         }
