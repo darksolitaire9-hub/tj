@@ -1,0 +1,22 @@
+{
+  "summary": "Scanned 1 pages. Found 1 suspicious segments.",
+  "risk_level": "high_risk",
+  "rationale": "Detected 1 suspicious artifacts. Critical prompt-injection patterns or severe physical anomalies (occlusion) detected.",
+  "segments": [
+    {
+      "id": "1-xyz",
+      "type": "obfuscated_payload",
+      "page": 1,
+      "position": "x:100, y:100",
+      "font_size": 12,
+      "text_content": "VGhpcyBpcyBhIG1hbGljaW91cyBwYXlsb2FkIGhpZGRlbiBpbiBiYXNlNjQgdGhhdCBhbiBMTE0gbWlnaHQgZGVjb2Rl",
+      "entropy": 5.8,
+      "notes": "String entropy is mathematically too high for natural language.",
+      "risk": "high",
+      "explanation": "String entropy is mathematically too high for natural language (5.80 bits/char). Resembles an encoded payload (e.g., Base64 or Hex).",
+      "recommended_action": "Flag immediately. High-entropy strings in PDF text streams are strongly indicative of encoded malicious payloads meant for downstream LLM execution."
+    }
+  ],
+  "global_recommendation": "Reject under policy due to hidden manipulative content, occlusion steganography, or prompt injections.",
+  "policy_notes": "Apply standard zero-trust boundaries."
+}

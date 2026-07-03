@@ -1,0 +1,33 @@
+{
+  "file_metadata": {
+    "name": "base64_injection.pdf",
+    "size_bytes": 10240,
+    "page_count": 1
+  },
+  "overall_stats": {
+    "suspicious_segment_count": 1,
+    "by_type": {
+      "keyword_stuffing": 0,
+      "spatial_anomaly": 0,
+      "prompt_injection": 0,
+      "microfont": 0,
+      "offpage": 0,
+      "white_text": 0,
+      "obfuscated_payload": 1,
+      "other": 0
+    },
+    "stopword_ratio": 0.45
+  },
+  "suspicious_segments": [
+    {
+      "id": "1-xyz",
+      "type": "obfuscated_payload",
+      "page": 1,
+      "position": "x:100, y:100",
+      "font_size": 12,
+      "text_content": "VGhpcyBpcyBhIG1hbGljaW91cyBwYXlsb2FkIGhpZGRlbiBpbiBiYXNlNjQgdGhhdCBhbiBMTE0gbWlnaHQgZGVjb2Rl",
+      "entropy": 5.8,
+      "notes": "String entropy is mathematically too high for natural language."
+    }
+  ]
+}

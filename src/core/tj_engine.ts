@@ -33,6 +33,7 @@ export function evaluateScan(scan: ScanResult): TJOutput {
     if (seg.risk === 'medium') mediumCount++;
     if (seg.type === 'spatial_anomaly') hasSpatialAnomaly = true;
     if (seg.type === 'prompt_injection') hasPromptInjection = true;
+    if (seg.type === 'obfuscated_payload') hasPromptInjection = true; // Route to high risk
     if (seg.type === 'keyword_stuffing') keywordStuffingCount++;
   }
 
@@ -92,6 +93,10 @@ function evaluateSegment(segment: SuspiciousSegment): SuspiciousSegment {
     risk = 'high';
     explanation = `Character density is mathematically impossible (${segment.char_density?.toFixed(2)} chars/pt²), indicating text forced into a tiny bounding box (occlusion/compression steganography).`;
     rec = 'Reject document. This is a deliberate attempt to hide massive amounts of text from human reviewers.';
+  } else if (type === 'obfuscated_payload') {
+    risk = 'high';
+    explanation = `String entropy is mathematically too high for natural language (${segment.entropy?.toFixed(2)} bits/char). Resembles an encoded payload (e.g., Base64 or Hex).`;
+    rec = 'Flag immediately. High-entropy strings in PDF text streams are strongly indicative of encoded malicious payloads meant for downstream LLM execution.';
   } else if (type === 'keyword_stuffing') {
     risk = 'medium';
     explanation = `Anomalously low stopword density (${((segment.stopword_ratio || 0) * 100).toFixed(1)}%). Normal human prose has a predictable ratio of function words, whereas pure skill lists have near-zero density.`;

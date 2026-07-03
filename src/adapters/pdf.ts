@@ -5,7 +5,13 @@ import type { ScanResult, SuspiciousSegment, SegmentType } from '../types';
 // Properly load the worker via Vite bundler instead of relying on external CDNs
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
-const STOPWORDS = new Set(['and', 'the', 'of', 'in', 'to', 'for', 'with', 'a', 'an', 'is', 'on', 'at', 'by', 'this', 'that', 'it', 'as', 'be', 'are', 'or', 'from', 'we', 'i', 'you']);
+const MICRO_DICTIONARIES = {
+  english: new Set(['and', 'the', 'of', 'in', 'to', 'for', 'with', 'a', 'an', 'is']),
+  spanish: new Set(['y', 'el', 'la', 'de', 'en', 'a', 'por', 'con', 'un', 'una']),
+  french: new Set(['et', 'le', 'la', 'de', 'en', 'à', 'pour', 'avec', 'un', 'une']),
+  german: new Set(['und', 'der', 'die', 'das', 'in', 'zu', 'für', 'mit', 'ein', 'eine']),
+  portuguese: new Set(['e', 'o', 'a', 'de', 'em', 'para', 'com', 'um', 'uma', 'os'])
+};
 
 export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string): Promise<ScanResult> {
   const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) });
@@ -20,6 +26,7 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
     microfont: 0,
     offpage: 0,
     white_text: 0,
+    obfuscated_payload: 0,
     other: 0
   };
 
@@ -48,11 +55,17 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
       // Compute density metrics
       const words = str.toLowerCase().split(/\s+/).filter(w => w.length > 0);
       const wordCount = words.length;
-      let stopwordCount = 0;
+      let maxStopwordCount = 0;
       
-      for (const w of words) {
-        if (STOPWORDS.has(w)) stopwordCount++;
+      for (const dict of Object.values(MICRO_DICTIONARIES)) {
+        let count = 0;
+        for (const w of words) {
+          if (dict.has(w)) count++;
+        }
+        if (count > maxStopwordCount) maxStopwordCount = count;
       }
+      
+      const stopwordCount = maxStopwordCount;
       
       globalWordCount += wordCount;
       globalStopwordCount += stopwordCount;
@@ -61,6 +74,7 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
       let notes = '';
       let stopword_ratio: number | undefined = undefined;
       let char_density: number | undefined = undefined;
+      let entropy: number | undefined = undefined;
 
       // 1. Spatial Anomaly (Character Density)
       const area = width * height;
@@ -69,6 +83,15 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
         if (char_density > 5.0 && str.length > 20) {
           type = 'spatial_anomaly';
           notes = `Mathematically impossible text density (${char_density.toFixed(2)} chars/pt²). Indicates occlusion or compression steganography.`;
+        }
+      }
+
+      // 1.5. Obfuscated Payload (Shannon Entropy)
+      if (!type && str.length >= 32) {
+        entropy = calculateEntropy(str);
+        if (entropy > 5.0) {
+          type = 'obfuscated_payload';
+          notes = `String entropy is mathematically too high for natural language (${entropy.toFixed(2)} bits/char). Resembles encoded payload (Base64/Hex).`;
         }
       }
 
@@ -123,6 +146,7 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
           font_size: fontSize,
           stopword_ratio,
           char_density,
+          entropy,
           text_content: str,
           notes
         });
@@ -149,4 +173,20 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
 
 function isWhite(colorArr: number[]): boolean {
   return colorArr.length === 3 && colorArr[0] >= 250 && colorArr[1] >= 250 && colorArr[2] >= 250;
+}
+
+function calculateEntropy(str: string): number {
+  const len = str.length;
+  if (len === 0) return 0;
+  const counts: Record<string, number> = {};
+  for (let i = 0; i < len; i++) {
+    const char = str[i];
+    counts[char] = (counts[char] || 0) + 1;
+  }
+  let entropy = 0;
+  for (const count of Object.values(counts)) {
+    const p = count / len;
+    entropy -= p * Math.log2(p);
+  }
+  return entropy;
 }

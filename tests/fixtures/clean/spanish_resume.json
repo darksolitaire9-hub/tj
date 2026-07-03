@@ -1,0 +1,22 @@
+{
+  "file_metadata": {
+    "name": "spanish_resume.pdf",
+    "size_bytes": 10240,
+    "page_count": 1
+  },
+  "overall_stats": {
+    "suspicious_segment_count": 0,
+    "by_type": {
+      "keyword_stuffing": 0,
+      "spatial_anomaly": 0,
+      "prompt_injection": 0,
+      "microfont": 0,
+      "offpage": 0,
+      "white_text": 0,
+      "obfuscated_payload": 0,
+      "other": 0
+    },
+    "stopword_ratio": 0.45
+  },
+  "suspicious_segments": []
+}

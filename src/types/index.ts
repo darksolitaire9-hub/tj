@@ -1,5 +1,5 @@
 export type RiskLevel = 'no_risk' | 'low_risk' | 'medium_risk' | 'high_risk';
-export type SegmentType = 'keyword_stuffing' | 'spatial_anomaly' | 'prompt_injection' | 'microfont' | 'offpage' | 'white_text' | 'other';
+export type SegmentType = 'keyword_stuffing' | 'spatial_anomaly' | 'prompt_injection' | 'microfont' | 'offpage' | 'white_text' | 'obfuscated_payload' | 'other';
 
 export interface SuspiciousSegment {
   id: string;
@@ -12,6 +12,7 @@ export interface SuspiciousSegment {
   z_index?: number;
   stopword_ratio?: number;
   char_density?: number;
+  entropy?: number;
   control_phrase_score?: number;
   text_content: string;
   notes?: string;
