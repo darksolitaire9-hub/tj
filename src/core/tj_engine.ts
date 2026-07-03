@@ -1,4 +1,4 @@
-import { ScanResult, TJOutput, SuspiciousSegment, RiskLevel } from '../types';
+import type { ScanResult, TJOutput, SuspiciousSegment, RiskLevel } from '../types';
 
 /**
  * TJ Deterministic Rule Engine

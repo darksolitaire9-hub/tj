@@ -1,12 +1,12 @@
 import * as pdfjsLib from 'pdfjs-dist';
-import { ScanResult, SuspiciousSegment } from '../types';
+import type { ScanResult, SuspiciousSegment } from '../types';
 
 // Ensure the worker is set up for Vite
 // In a real Vite app, we would import the worker URL, but for this scaffolding:
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string): Promise<ScanResult> {
-  const loadingTask = pdfjsLib.getDocument(new Uint8Array(arrayBuffer));
+  const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array(arrayBuffer) });
   const pdf = await loadingTask.promise;
   
   const segments: SuspiciousSegment[] = [];
@@ -40,7 +40,8 @@ export async function scanPDFBuffer(arrayBuffer: ArrayBuffer, fileName: string):
       
       // We would ideally inspect the render operations for fill color, 
       // but as a mock heuristic adapter step:
-      if (item.color && isWhite(item.color as number[])) {
+      const anyItem = item as any;
+      if (anyItem.color && isWhite(anyItem.color as number[])) {
          type = 'white_text';
          whiteTextCount++;
          notes = 'Fill color is pure white, invisible on white backgrounds.';
