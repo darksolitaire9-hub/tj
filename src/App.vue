@@ -117,6 +117,7 @@ function onChange(e: Event) {
       <h3>About TJ Resume Armor</h3>
       <p>TJ Resume Armor is an open-source, zero-trust PDF resume scanner built by <a href="https://github.com/darksolitaire9-hub" target="_blank">darksolitaire9-hub</a>. It is focused on local-first, deterministic LLM safety tooling.</p>
       <p>It detects hidden prompt injections, micro-fonts, multilingual steganography, and encoded payloads before they hit LLMs or ATS systems. All scanning happens directly in your browser using pure statistical mathematics and physical bounding box constraints.</p>
+      <p><strong>Scientific Foundation:</strong> Our deterministic geometric detection rules are inspired by and grounded in the empirical study <a href="https://arxiv.org/abs/2605.28999v1" target="_blank"><em>Measuring Real-World Prompt Injection Attacks in LLM-based Resume Screening</em></a> (Zhang et al., May 2026), which analyzed ~200,000 real-world resumes across production ATS pipelines.</p>
       <p>To learn more, contribute, or star the project, visit the <a href="https://github.com/darksolitaire9-hub/tj" target="_blank">TJ Resume Armor repository on GitHub</a>.</p>
     </footer>
   </main>
